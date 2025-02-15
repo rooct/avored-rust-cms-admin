@@ -300,7 +300,7 @@ pub mod tests {
 
         env::set_var("AVORED_REACT_FRONTEND_APP_URL", "http://localhost:5173");
         env::set_var("AVORED_REACT_ADMIN_APP_URL", "http://localhost:3000");
-        env::set_var("AVORED_BACK_END_APP_URL", "http://localhost:8080");
+        env::set_var("AVORED_BACK_END_APP_URL", "http://localhost:8081");
 
         env::set_var("SMTP_HOST", "http://smtp.url");
         env::set_var("SMTP_USERNAME", "smtp_username");

@@ -30,6 +30,7 @@ utoipa = "4.2.3"
 juniper = "0.16.1"
 juniper_axum = { version = "0.1.0", features = ["subscriptions"] }
 tokio-stream = "0.1.16"
+dashmap = "6.1.0"
 
 
 [dev-dependencies]

@@ -27,6 +27,7 @@ const getFormattedDate = ((date: string) => {
 
 const hasPermission = ((identifier: string ): boolean => {
     const logged_in_user = useLoggedInUser()
+    console.log("logged_in_user: ",logged_in_user)
     if (logged_in_user.is_super_admin) {
         return true
     }

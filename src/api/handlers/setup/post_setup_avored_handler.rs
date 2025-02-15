@@ -158,8 +158,9 @@ pub async fn post_setup_avored_handler(
         DEFINE TABLE fields;
 
     ";
-
+    println!("password-------{}",payload.password);
     let password = payload.password.as_bytes();
+    println!("state.config.password_salt--- {}",state.config.password_salt);
     let salt = SaltString::from_b64(&state.config.password_salt)?;
 
     let argon2 = Argon2::default();

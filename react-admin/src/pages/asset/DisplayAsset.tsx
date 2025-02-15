@@ -7,8 +7,9 @@ import {
 import { useDeleteFolder } from "./hooks/useDeleteFolder";
 import { RenameAssetModal } from "./RenameAssetModal";
 import { useTranslation } from "react-i18next";
-import {Link} from "react-router-dom";
-import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/react";
+import { Link, useNavigate } from "react-router-dom";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { useDeleteAsset } from "./hooks/useDeleteAsset";
 
 type DisplayAssetProp = {
   asset: IAssetModel;
@@ -17,6 +18,7 @@ type DisplayAssetProp = {
 export const DisplayAsset = ({ asset, openFolder }: DisplayAssetProp) => {
   const [isRenameFolderModalOpen, setIsRenameFolderModalOpen] = useState(false);
   const [t] = useTranslation("global");
+  const navigate = useNavigate();
 
   const onCloseRenameFolderModal = () => {
     setIsRenameFolderModalOpen(false);
@@ -27,18 +29,28 @@ export const DisplayAsset = ({ asset, openFolder }: DisplayAssetProp) => {
   };
   const backend_url = import.meta.env.VITE_AVORED_BACKEND_BASE_URL;
   const { mutate: deleteFolderMutate } = useDeleteFolder();
+  const { mutate: deleteAssetMutate } = useDeleteAsset();
 
   const onRemoveAssetOnClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
     type: string,
     asset_id: string,
   ) => {
+    console.log("xxx delete ", asset_id, type, e);
     e.preventDefault();
-    if (type === "FOLDER") {
+    if (type === "FILE") {
+      deleteAssetMutate({ asset_id });
+    } else if (type === "FOLDER") {
       deleteFolderMutate({ asset_id });
     }
   };
 
+  const enterFold = (asset: any)=>{
+    if(asset.asset_type === "FOLDER"){
+      navigate(`/admin/asset/${asset.id}`)
+    }
+   
+  }
   return (
     <>
       <div key={asset.id} className="border rounded p-3">
@@ -61,6 +73,7 @@ export const DisplayAsset = ({ asset, openFolder }: DisplayAssetProp) => {
                 <a
                   className="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
                   onClick={(e) =>
+
                     onRemoveAssetOnClick(e, asset.asset_type, asset.id)
                   }
                   href="#"
@@ -80,7 +93,7 @@ export const DisplayAsset = ({ asset, openFolder }: DisplayAssetProp) => {
             </MenuItems>
           </Menu>
         </div>
-        <div className="flex justify-center h-40 mb-3">
+        <div onClick={()=>enterFold(asset)} className="flex justify-center h-40 mb-3">
           {asset.asset_type === "FOLDER" ? (
             <>
               <FolderPlusIcon className="h-32 w-32 text-gray-300" />
@@ -100,11 +113,10 @@ export const DisplayAsset = ({ asset, openFolder }: DisplayAssetProp) => {
             {asset.asset_type === "FOLDER" ? (
               <>
                 <button
-                  onClick={(e) => openFolder(e, asset.id)}
                   className="bg-gray-100 py-2 px-1 rounded w-full hover:bg-gray-200"
                   type="button"
                 >
-                  <Link to={`/admin/asset/${asset.id}`}>{asset.name}</Link>
+                  {asset.name}
                 </button>
               </>
             ) : (

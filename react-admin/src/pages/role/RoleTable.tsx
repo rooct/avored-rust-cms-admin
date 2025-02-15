@@ -1,14 +1,14 @@
-import {Link} from "react-router-dom";
-import {useRoleTable} from "./hooks/useRoleTable";
+import { Link } from "react-router-dom";
+import { useRoleTable } from "./hooks/useRoleTable";
 import _ from 'lodash';
-import {useTranslation} from "react-i18next";
-import {createColumnHelper, getCoreRowModel, SortingState, useReactTable} from "@tanstack/react-table";
-import {getFormattedDate} from "../../lib/common";
+import { useTranslation } from "react-i18next";
+import { createColumnHelper, getCoreRowModel, SortingState, useReactTable } from "@tanstack/react-table";
+import { getFormattedDate } from "../../lib/common";
 import IRoleModel from "../../types/admin-user/IRoleModel";
 import AvoRedTable from "../../components/AvoRedTable";
 import HasPermission from "../../components/HasPermission";
-import {useQueryClient} from "@tanstack/react-query";
-import {useState} from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
 export default function RoleTable() {
     const [sorting, setSorting] = useState<SortingState>([]);
@@ -110,19 +110,19 @@ export default function RoleTable() {
                         {t("roles")}
                     </div>
                     <HasPermission displayDenied={false} identifier="role_create">
-                    <Link
-                        className="ml-auto bg-primary-600 py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                        to="/admin/role-create"
-                    >
-                        {t("create")}
-                    </Link>
+                        <Link
+                            className="ml-auto bg-primary-600 py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                            to="/admin/role-create"
+                        >
+                            {t("create")}
+                        </Link>
                     </HasPermission>
                 </div>
 
                 <div className="w-full block overflow-hidden">
                     <div className="overflow-x-scroll">
                         <HasPermission identifier="role_table">
-                            <AvoRedTable table={table}/>
+                            <AvoRedTable table={table} />
                         </HasPermission>
                     </div>
                 </div>

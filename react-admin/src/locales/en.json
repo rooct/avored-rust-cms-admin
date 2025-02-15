@@ -24,8 +24,11 @@
   "roles": "Roles",
   "en": "en",
   "fr": "fr",
+  "zh": "zh",
+  "remember_me": "Remember me",
   "current_password": "Current Password",
   "english": "English",
+  "chinses": "中文",
   "french": "French",
   "admin_users": "Admin Users",
   "id": "ID",
@@ -144,7 +147,8 @@
   "get_role": "Get role",
   "locales": {
     "en_label": "English",
-    "fr_label": "French"
+    "fr_label": "French",
+    "zh_label": "Chinese"
   },
   "sidebar": {
     "dashboard": "Dashboard",

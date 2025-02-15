@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import zh_locales from "./locales/zh.json";
 import en_locales from "./locales/en.json";
 import fr_locales from "./locales/fr.json";
 import i18next from "i18next";
@@ -15,7 +16,7 @@ const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
-const currentLocale: string = localStorage.getItem("LOCALE") ?? "en";
+const currentLocale: string = localStorage.getItem("LOCALE") ?? "zh";
 
 declare global {
   interface Window {
@@ -28,12 +29,15 @@ i18next.init({
   lng: currentLocale,
   fallbackLng: currentLocale,
   resources: {
-    en: {
-      global: en_locales,
+    zh: {
+      global: zh_locales,
     },
     fr: {
       global: fr_locales,
     },
+    en: {
+      global: en_locales,
+    }
   },
 });
 

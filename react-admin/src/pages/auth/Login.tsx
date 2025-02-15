@@ -1,22 +1,24 @@
 import logo from "../../assets/logo_only.svg"
 import { Link } from "react-router-dom"
 import InputField from "../../components/InputField"
-import {SubmitHandler, useForm} from "react-hook-form"
+import { SubmitHandler, useForm } from "react-hook-form"
 import { joiResolver } from "@hookform/resolvers/joi"
 import { useLogin } from "./hooks/useLogin"
-import {useLoginSchema} from "./schemas/login.schema"
+import { useLoginSchema } from "./schemas/login.schema"
 import ErrorMessage from "../../components/ErrorMessage"
 import { useTranslation } from "react-i18next"
 import ILoginPost from "../../types/auth/ILoginPost"
-import {changeLocale} from "../../lib/common"
-import AvoRedButton from "../../components/AvoRedButton";
+import AvoRedButton from "../../components/AvoRedButton"
+import { useEffect, useState } from "react"
 
 function Login() {
     const [t, i18n] = useTranslation("global")
+    const [rememberMe, setRememberMe] = useState<boolean>(false) // State to track "Remember Me"
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors },
+        setValue
     } = useForm<ILoginPost>({
         resolver: joiResolver(useLoginSchema()),
     })
@@ -26,8 +28,25 @@ function Login() {
         error
     } = useLogin()
 
+    // Load stored email if exists
+    useEffect(() => {
+        const storedEmail = localStorage.getItem("email")
+        console.log("storedEmail::: ", storedEmail);
+        if (storedEmail) {
+            setValue("email", storedEmail)
+        }
+    }, [setValue])
+
+    // Handle form submission
     const submitHandler: SubmitHandler<ILoginPost> = (data) => {
-        mutate(data);
+        console.log("data::: ", data);
+        if (rememberMe) {
+            console.log("rememberMe:3333:: ", data.email);
+            localStorage.setItem("email", data.email) // Save email in localStorage if "Remember Me" is checked
+        } else {
+            localStorage.removeItem("email") // Remove email from localStorage if not checked
+        }
+        mutate(data)
     }
 
     return (
@@ -41,8 +60,6 @@ function Login() {
                     {t("sign_into_your_account")}
                 </h2>
             </div>
-            <div></div>
-
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                     <form onSubmit={handleSubmit(submitHandler)} className="space-y-5">
@@ -65,7 +82,22 @@ function Login() {
                             />
                             <ErrorMessage frontendErrors={errors} backendErrors={error} identifier="password" />
                         </div>
-                        <div className="flex items-center justify-end">
+
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center">
+                                <input
+                                    id="rememberMe"
+                                    type="checkbox"
+                                    checked={rememberMe}
+                                    onChange={e => {
+                                        setRememberMe(e.target.checked)
+                                    }}
+                                    className="h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                                />
+                                <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-900">
+                                    {t('remember_me')}
+                                </label>
+                            </div>
                             <div className="text-sm">
                                 <Link
                                     to={`/admin/forgot-password`}
@@ -82,17 +114,6 @@ function Login() {
                                 isPending={isPending}
                                 className="bg-primary-600 hover:bg-primary-500 focus:ring-primary-500"
                             />
-                        </div>
-
-                        <div className="text-gray-600 text-center text-sm">
-                            {t("need_to_change_language")}
-                            <select
-                                onChange={(e) => changeLocale(i18n, e.target.value)}
-                                className="outline-none border-none appearance-none pr-8"
-                            >
-                                <option>{t("en")}</option>
-                                <option>{t('fr')}</option>
-                            </select>
                         </div>
                     </form>
                 </div>

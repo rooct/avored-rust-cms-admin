@@ -40,7 +40,7 @@ function AssetTable() {
 
   const openFolder = (e: React.MouseEvent<HTMLElement>, asset_id: string) => {
     e.preventDefault();
-    console.log(asset_id);
+    console.log("openFolder---",asset_id);
   };
 
   const onCloseCreateFolderModal = () => {
